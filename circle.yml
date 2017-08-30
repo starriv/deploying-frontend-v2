@@ -1,19 +1,18 @@
 version: 2
 jobs:
-   build:
-     docker:
-       - image: circleci/node:latest
-     steps:
-       - checkout
-       - run:
-         name: Update npm
-         command: 'sudo npm install -g npm@latest'
-       - restore_cache:
-         key: dependency-cache-{{ checksum "package.json" }}
-       - run:
-         name: Install dependencies
-         command: npm install && npm build
-       - save_cache:
-         key: dependency-cache-{{ checksum "package.json" }}
-         paths:
-          - node_modules
+  build:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn run build && yarn run test
