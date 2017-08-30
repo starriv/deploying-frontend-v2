@@ -2,10 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:7.4.0
-    working_directory: /home/ubuntu/cci-demo-react
+      - image: node:latest
+    working_directory: /usr/src/app
     steps:
       - checkout
-      - run: mkdir -p /home/ubuntu/cci-demo-react/artifacts
+      - run: mkdir -p /usr/src/app
       - run: npm install
       - run: npm test
